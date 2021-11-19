@@ -2,30 +2,33 @@ const router = require('express').Router();
 const { Comment, User, Post } = require('../../models');
 
 router.get('/', (req, res) => {
-    Comment.findAll({
-        attributes: ['id', 'user_id', 'post_id', 'comment_text', 'created_at', 'updated_at'
-    ],
-        order:[
-            ['created_at', 'ASC']
-        ],
-        include: [
-            {
-                model: User,
-                attributes: ['username']
-            },
-            {
-                model: Post,
-                attributes: ['id', 'title', 'post_url', 'created_at']
-            }
-        ]
-    })
-    .then(dbCommentData => {
-        if (!dbCommentData) {
-            res.status(404).json({ message: 'No comment found with this id' });
-            return;
-        }
-        res.json(dbCommentData);
-    })
+    Comment.findAll(
+    //     {
+    //     attributes: ['id', 'user_id', 'post_id', 'comment_text', 'created_at', 'updated_at'
+    // ],
+    //     order:[
+    //         ['created_at', 'ASC']
+    //     ],
+    //     include: [
+    //         {
+    //             model: User,
+    //             attributes: ['username']
+    //         },
+    //         {
+    //             model: Post,
+    //             attributes: ['id', 'title', 'post_url', 'created_at']
+    //         }
+    //     ]
+    // }
+    )
+    .then(dbCommentData =>
+        // {
+        // if (!dbCommentData)
+        // {
+        //     // res.status(404).json({ message: 'No comment found with this id' });
+        //     // return;
+        // }
+        res.json(dbCommentData))
     .catch(err => {
         console.log(err);
         res.status(500).json(err);

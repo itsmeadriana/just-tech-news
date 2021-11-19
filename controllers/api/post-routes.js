@@ -33,17 +33,18 @@ router.get('/', (req, res) => {
         }
       ]
     })
-      .then(dbPostData => {
-        const posts = dbPostData.map(post => post.get({ plain: true }));
-          console.log(dbPostData[0]);
-        // pass a single post object into the homepage template
-        res.render('homepage', dbPostData[0].get({ plain: true }))
+      .then(dbPostData => res.json(dbPostData))
+              // {
+        // const posts = dbPostData.map(post => post.get({ plain: true }));
+        //   console.log(dbPostData[0]);
+        // // pass a single post object into the homepage template
+        // res.render('homepage', dbPostData[0].get({ plain: true }))
       .catch(err => {
         console.log(err);
         res.status(500).json(err);
       });
   });
-});
+// });
 
 // GET a single post
 router.get('/:id', (req, res) => {
@@ -99,9 +100,7 @@ router.post('/', (req, res) => {
 
 // PUT /api/posts/upvote
 router.put('/upvote', (req, res) => {
-    Post.upvote(req.body, {
-            Vote
-        })
+    Post.upvote({ ...req.body, user_id: req.session.user_id }, { Vote, Comment, User })
         .then(dbUserData => res.json(dbUserData))
         .catch(err => {
             console.log(err);
